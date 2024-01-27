@@ -2,7 +2,7 @@ import "@/styles/globals.css"
 import { Metadata } from "next"
 import Head from "next/head"
 
-import { fontSans } from "@/lib/fonts"
+//import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import NavBar from "@/components/NavBar"
 
@@ -30,11 +30,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Head>
           <title>bdd admin</title>
         </Head>
-        <body className={`${fontSans.variable} container flex min-h-screen flex-col gap-8 bg-black  py-8 text-white`}>
+        <body
+          className={` container flex min-h-screen flex-col gap-8 bg-[#161616]   py-8 text-white`}
+        >
           <NavBar />
-          <div>
-            {children}
-          </div>
+          <div>{children}</div>
         </body>
       </html>
     </>

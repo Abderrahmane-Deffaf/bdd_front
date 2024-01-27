@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -13,13 +14,17 @@ import {
   FormLabel,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
   name: z.string().min(2),
-  value: z.string().min(2),
+  value: z.string().min(1),
 })
 
 const CreateSizePage = () => {
+  const { toast } = useToast()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,8 +32,24 @@ const CreateSizePage = () => {
       value: "",
     },
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL}/sizes`,
+        values
+      )
+      if (res.data?.message) {
+        toast({
+          description: res.data.message,
+        })
+        form.reset()
+      }
+    } catch (e) {
+      console.log(e)
+      toast({
+        description: "error",
+      })
+    }
   }
   return (
     <section className=" space-y-9">
@@ -68,9 +89,17 @@ const CreateSizePage = () => {
             />
           </div>
 
-          <Button className="w-fit px-5 font-bold" variant="secondary" type="submit">Create</Button>
+          <Button
+            className="w-fit px-5 font-bold"
+            variant="secondary"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
+            Create
+          </Button>
         </form>
       </Form>
+      <Toaster />
     </section>
   )
 }

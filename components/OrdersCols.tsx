@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { ColumnDef } from "@tanstack/react-table"
 import axios from "axios"
 import { Trash } from "lucide-react"
@@ -12,17 +11,20 @@ import { useToast } from "./ui/use-toast"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Product = {
+
+export type Order = {
   id: number
   name: string
   price: number
   imgUrl: string
-  createdAt: string
+  phone: string
+  address: string
+  size: string
   color: string
-  quantity: number
+  createdAt: string
 }
 
-export const productsColumns: ColumnDef<Product>[] = [
+export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "id",
     header: "Id",
@@ -53,8 +55,32 @@ export const productsColumns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "quantity",
-    header: "Quantity",
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+    accessorKey: "address",
+    header: "Address",
+  },
+  {
+    accessorKey: "size",
+    header: "Size",
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
+    cell: ({ row }) => {
+      return (
+        <span
+          className={` h-10 block w-10 rounded-full `}
+          style={{ backgroundColor: row?.original?.color }}
+        ></span>
+      )
+    },
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
   },
   {
     accessorKey: "createdAt",
@@ -76,7 +102,7 @@ export const productsColumns: ColumnDef<Product>[] = [
             onClick={async () => {
               try {
                 const res = await axios.delete(
-                  `http://localhost:3000/api/v1/products/${row.original.id}`
+                  `http://localhost:3000/api/v1/orders/${row.original.id}`
                 )
                 console.log(res)
                 if (res.data?.message) {
