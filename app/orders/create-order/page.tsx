@@ -95,7 +95,7 @@ const CreateOrderPage = () => {
     }
     getProductColors()
     getProductSizes()
-  }, [form.formState.isDirty])
+  }, [form.getValues("productId")])
   console.log(form.getValues("productId"))
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

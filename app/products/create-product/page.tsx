@@ -76,6 +76,7 @@ const CreateProductPage = () => {
     formData.append("sizeIds", JSON.stringify(sizesIds))
     formData.append("colorIds", JSON.stringify(colorsIds))
 
+    formData.forEach((key, value) => console.log(key, value))
     valuesNoColors.map((Element) => {
       if (Element[0] == "image") {
         formData.append("image", values.image, values.image?.name)
@@ -96,6 +97,8 @@ const CreateProductPage = () => {
         form.reset()
       }
     } catch (e) {
+      console.log(e)
+
       toast({
         description: "error",
       })
@@ -132,7 +135,7 @@ const CreateProductPage = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="size name" {...field} />
+                    <Input placeholder="Product name" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -144,7 +147,11 @@ const CreateProductPage = () => {
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input
+                      placeholder="Product price"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
